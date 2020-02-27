@@ -20,7 +20,7 @@
     "ejs": "^2.6.1",
     "express": "^4.16.4",
     "express-session": "^1.17.0",
-    "mongoose": "^5.4.14",
+    "mongoose": "^5.7.5",
     "morgan": "^1.9.1",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
