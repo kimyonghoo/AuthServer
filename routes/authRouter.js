@@ -3,12 +3,11 @@ const passport = require('passport');
 const router = express.Router();
 
 router.get('/success',function(req, res){
-    console.log("^ㅇ^success^ㅇ^", res);
-    return res.send("success");
+    //로그인 된 ID 정보를 전달해야 함
+    // return res.send("success");
 });
 router.get('/failed',function(req, res){
-    console.log("ㅠㅠfailedㅠㅠ", res);
-    return res.send("failed");
+    res.send(req.flash('signinMessage')[0]);
 });
 
 router.post('/signin', passport.authenticate('local-signin', {

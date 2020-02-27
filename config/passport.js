@@ -18,8 +18,8 @@ module.exports = function (passport) {
   }, function (req, email, password, done) {
     User.findOne({ 'email': email }, function (err, user) {
       if (err) return done(err);
-      if (!user) return done(null, false, req.flash('signinMessage', 'ID does not exist'));
-      if (!user.validPassword(password, user.password)) return done(null, false, req.flash('signinMessage', 'Wrong password'));
+      if (!user) return done(null, false, req.flash('signinMessage', {status: 'failed', message: 'ID does not exist'}));
+      if (!user.validPassword(password, user.password)) return done(null, false, req.flash('signinMessage', {status: 'failed', message: 'Wrong password'}));
       return done(null, user);
     });
   }));
