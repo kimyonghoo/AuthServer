@@ -8,7 +8,9 @@ const session = require('express-session');
 const passport = require('passport');
 const flash = require("connect-flash");
 const authRouter = require('./routes/authRouter');
+const userRouter = require('./routes/userRouter');
 require('./config/passport')(passport);
+require('dotenv').config();
 
 const connect = require('./schemas'); // 파일명이 index.js 면 /index 생략 가능하다.
 require('dotenv').config();
@@ -42,15 +44,10 @@ app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 app.use('/auth', authRouter);
-
-/*
- * send errors - can not found routers
- * 404 error handler
-*/
+app.use('/user', userRouter);
 app.use((req, res, next) => {
     res.send('404 Not found');
 })
-
-app.listen(3030, () => {
-    console.log('server is ready');
+app.listen(process.env.APP_PORT, () => {
+    console.log('server is running on', process.env.APP_PORT);
 })

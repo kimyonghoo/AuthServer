@@ -1,5 +1,9 @@
 const LocalStrategy = require('passport-local').Strategy;
+const passportJWT = require('passport-jwt');
+const JWTStrategy   = passportJWT.Strategy;
+const ExtractJWT = passportJWT.ExtractJwt;
 const User = require('../schemas/User');
+require('dotenv').config();
 
 module.exports = function (passport) {
   passport.serializeUser(function (user, done) {
@@ -23,4 +27,21 @@ module.exports = function (passport) {
       return done(null, user);
     });
   }));
+
+  //JWT Strategy
+  passport.use(new JWTStrategy({
+    jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
+    secretOrKey   : process.env.JWT_SECRET
+    },
+    function (jwtPayload, done) {
+        return User.findOne({'email': jwtPayload})
+            .then(user => {
+              console.log(user);
+                return done(null, user);
+            })
+            .catch(err => {
+                return done(err);
+            });
+    }
+    ));
 }
