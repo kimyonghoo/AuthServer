@@ -36,7 +36,6 @@ module.exports = function (passport) {
     function (jwtPayload, done) {
         return User.findOne({'email': jwtPayload})
             .then(user => {
-              console.log(user);
                 return done(null, user);
             })
             .catch(err => {

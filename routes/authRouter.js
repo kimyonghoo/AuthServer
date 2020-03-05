@@ -23,7 +23,18 @@ router.get('/logout', function (req, res) {
     req.logout();
     res.redirect('/auth');
 });
-router.get('/check', passport.authenticate('jwt', {session: false}), async (req, res)=>{
-    res.send('success');
+router.get('/check', function authenticateJwt(req, res, next) {
+    passport.authenticate('jwt', function (err, user, info) {
+        if (err) return next(err);
+        if (!user) return res.status(401).send({
+            "error": {
+                "code": "401",
+                "message": "Authorization failed\nPlease login first"
+            }
+        });
+        req.user = user;
+        next();
+    })(req, res, next);
 });
+
 module.exports = router;
