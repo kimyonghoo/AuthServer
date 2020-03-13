@@ -4,10 +4,11 @@ const jwt = require("jsonwebtoken");
 const router = express.Router();
 
 router.get('/signInSuccess', function(req, res){
-    const token = jwt.sign(req.user.email, process.env.JWT_SECRET);
+    const timeout = process.env.SESSION_TIMEOUT;
+    const token = jwt.sign({email: req.user.email}, process.env.JWT_SECRET, {expiresIn: timeout});
     const user = req.user.email;
     const status = true;
-    return res.json({status, user, token});
+    return res.json({status, user, token, timeout});
 
 });
 router.get('/signInfailed',function(req, res){
@@ -31,6 +32,7 @@ router.post('/signin', passport.authenticate('local-signin', {
     failureRedirect: '/auth/signInfailed',
     failureFlash: true
 }));
+
 router.get('/check', passport.authenticate('jwt', {
     successRedirect: '/auth/checkSuccess',
     failureRedirect: '/auth/checkFailed',

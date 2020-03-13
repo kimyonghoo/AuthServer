@@ -34,7 +34,7 @@ module.exports = function (passport) {
     secretOrKey   : process.env.JWT_SECRET
     },
     function (jwtPayload, done) {
-        return User.findOne({'email': jwtPayload})
+        return User.findOne({'email': jwtPayload.email})
             .then(user => {
                 return done(null, user);
             })
