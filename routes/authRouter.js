@@ -25,14 +25,17 @@ router.get('/checkFailed',function(req, res){
     });
 });
 router.get('/checkSuccess',function(req, res){
-    return res.send('success');
+    const timeout = process.env.SESSION_TIMEOUT;
+    const token = jwt.sign({email: req.user.email}, process.env.JWT_SECRET, {expiresIn: timeout});
+    const user = req.user.email;
+    const status = true;
+    return res.json({status, user, token, timeout});
 });
 router.post('/signin', passport.authenticate('local-signin', {
     successRedirect: '/auth/signInSuccess',
     failureRedirect: '/auth/signInfailed',
     failureFlash: true
 }));
-
 router.get('/check', passport.authenticate('jwt', {
     successRedirect: '/auth/checkSuccess',
     failureRedirect: '/auth/checkFailed',

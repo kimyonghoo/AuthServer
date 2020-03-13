@@ -35,16 +35,16 @@ app.use(bodyParser.urlencoded({extended:false}));
 
 //Authorization
 app.use(session({
-    secret: 'keyboard cat',
-    resave: false,
-    saveUninitialized: true,
-    cookie: { maxAge: 5000 }
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: true,
 }));
 app.use(flash());   
 app.use(passport.initialize());
 app.use(passport.session());
 app.use('/auth', authRouter);
 app.use('/user', userRouter);
+
 app.use((req, res, next) => {
     res.send('404 Not found');
 })

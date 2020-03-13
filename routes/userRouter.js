@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../schemas/User');
-const passport  = require('passport');
 
 router.get('/', async (req, res)=>{
     try {
@@ -11,7 +10,7 @@ router.get('/', async (req, res)=>{
     }
 });
 
-router.get('/search', passport.authenticate('jwt', {session: false}), async (req, res)=>{
+router.get('/search', async (req, res)=>{
     try {
         const result = await User.find({});
         res.json(result);
